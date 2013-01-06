@@ -29,8 +29,25 @@ void setup() {
 }
 
 boolean sawMotionLastTime = false;
-const char kAreYouStillThereUrl[] = "http://www.portal2sounds.com/sound.php?id=2640&stream";
-const char kISeeYouUrl[] = "http://p1.portal2sounds.com/sound.php?id=303&stream";
+//String kAreYouStillThereUrl = "http://www.portal2sounds.com/sound.php?id=2640&stream";
+//String kISeeYouUrl = "http://p1.portal2sounds.com/sound.php?id=303&stream";
+
+String neg1 = "308"; //Is anyone there?
+String neg2 = "347"; //Are you still there?
+String neg3 = "280"; //Are you coming back?
+String whereAreYou[] = {neg1, neg2, neg3};
+int whereAreYouIndex = 0;
+
+String pos1 = "303"; //I see you
+String pos2 = "336"; //Hey
+String pos3 = "300"; //Hello? Friend.
+String pos4 = "331"; //Hey hey hey
+String pos5 = "319"; //There you are
+String pos6 = "330"; //Hey!
+String pos7 = "304"; //Hello!
+
+String seeingYou[] = {pos1, pos2, pos3, pos4, pos5, pos6, pos7};
+int seeingYouIndex = 0;
 
 void loop() {
   // listen for incoming clients
@@ -58,17 +75,17 @@ void loop() {
             client.println("I see you!<br/>");
             if (!sawMotionLastTime) {
               // New motion
-              client.print("<script>document.getElementById('sounds').innerHTML = \"<embed src='");
-              client.print(kISeeYouUrl);
-              client.println("'>\";</script>");
+              client.print("<script>document.getElementById('sounds').innerHTML = \"<embed src='http://p1.portal2sounds.com/sound.php?id=");
+              client.print(seeingYou[seeingYouIndex++%7]);
+              client.println("&stream'>\";</script>");
               sawMotionLastTime = true;
             }
           } else {
             client.println("Where are you hiding?<br/>");
             if (sawMotionLastTime) {
-              client.print("<script>document.getElementById('sounds').innerHTML = \"<embed src='");
-              client.print(kAreYouStillThereUrl);
-              client.println("'>\";</script>");
+              client.print("<script>document.getElementById('sounds').innerHTML = \"<embed src='http://p1.portal2sounds.com/sound.php?id=");
+              client.print(whereAreYou[whereAreYouIndex++%3]);
+              client.println("&stream'>\";</script>");
               sawMotionLastTime = false;
             }
           }
